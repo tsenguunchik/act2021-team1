@@ -60,18 +60,28 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    bcrypt (3.1.16)
+    bcrypt (3.1.16-java)
     bootsnap (1.7.7)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.10.0)
     ffi (1.15.3)
+    ffi (1.15.3-java)
+    ffi (1.15.3-x64-mingw32)
+    ffi (1.15.3-x86-mingw32)
     globalid (0.5.2)
       activesupport (>= 5.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    jwt (2.2.3)
     listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -86,14 +96,25 @@ GEM
     mini_portile2 (2.6.1)
     minitest (5.14.4)
     msgpack (1.4.2)
+    msgpack (1.4.2-java)
     mysql2 (0.5.3)
     nio4r (2.5.8)
+    nio4r (2.5.8-java)
     nokogiri (1.12.3)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
+    nokogiri (1.12.3-java)
+      racc (~> 1.4)
+    nokogiri (1.12.3-x64-mingw32)
+      racc (~> 1.4)
+    nokogiri (1.12.3-x86-mingw32)
+      racc (~> 1.4)
     puma (5.4.0)
       nio4r (~> 2.0)
+    puma (5.4.0-java)
+      nio4r (~> 2.0)
     racc (1.5.2)
+    racc (1.5.2-java)
     rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -138,17 +159,28 @@ GEM
     thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2021.1)
+      tzinfo (>= 1.0.0)
     websocket-driver (0.7.5)
+      websocket-extensions (>= 0.1.0)
+    websocket-driver (0.7.5-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     zeitwerk (2.4.2)
 
 PLATFORMS
+  java
   ruby
+  x64-mingw32
+  x86-mingw32
+  x86-mswin32
 
 DEPENDENCIES
+  bcrypt
   bootsnap (>= 1.4.4)
   byebug
+  dotenv-rails
+  jwt
   listen (~> 3.3)
   mysql2 (~> 0.5)
   puma (~> 5.0)
@@ -157,7 +189,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 2.6.3p62
+   ruby 3.0.1p64
 
 BUNDLED WITH
-   2.1.4
+   2.2.25
