@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Button, Box, Container, Typography } from '@material-ui/core';
 //
 import { varFadeInDown, varFadeInUp, MotionInView } from '../../animate';
+
+import Modal from '../Modal';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +30,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LandingAdvertisement() {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <Container maxWidth="lg">
       <ContentStyle>
@@ -57,8 +62,6 @@ export default function LandingAdvertisement() {
             <Button
               size="large"
               variant="contained"
-              target="_blank"
-              href="#"
               sx={{
                 whiteSpace: 'nowrap',
                 boxShadow: (theme) => theme.customShadows.z8,
@@ -66,12 +69,16 @@ export default function LandingAdvertisement() {
                 bgcolor: 'common.white',
                 '&:hover': { bgcolor: 'grey.300' }
               }}
+              onClick={() => {
+                setOpenModal(true);
+              }}
             >
               Request Now
             </Button>
           </MotionInView>
         </Box>
       </ContentStyle>
+      {openModal && <Modal isOpen={openModal} closeModal={() => setOpenModal(false)} />}
     </Container>
   );
 }
