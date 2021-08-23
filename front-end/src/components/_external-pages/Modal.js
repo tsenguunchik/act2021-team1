@@ -1,15 +1,17 @@
 import { BoxZoomHandler } from 'mapbox-gl';
+import * as Yup from 'yup';
 import React from 'react';
 import Modal from 'react-modal';
+import { useFormik, Form, FormikProvider } from 'formik';
 import { useForm } from 'react-hook-form';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-import { Button, Box, Container, Typography, TextField, Stack } from '@material-ui/core';
+import { Button, Box, Container, Typography, TextField, Stack, Alert } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Form from './Form';
+import { TextFieldsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   root: {
@@ -84,14 +86,30 @@ const useStyles = makeStyles({
 function MyModal({ isOpen, closeModal }) {
   const classes = useStyles();
   const [pathNumber, setPath] = React.useState('');
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+
+  const RegisterSchema = Yup.object().shape({
+    firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
+    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    essayLink: Yup.string().required('Essay link is required'),
+    path: Yup.string().required('Please choose one of the paths')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      essayLink: '',
+      path: ''
+    },
+    validationSchema: RegisterSchema,
+    onSubmit: (data) => {
+      console.log(data);
+    }
+  });
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   const handleChange = (event) => {
     setPath(event.target.value);
@@ -104,7 +122,71 @@ function MyModal({ isOpen, closeModal }) {
         <Typography variant="h2" sx={{ marginLeft: 10, color: '#00AB55' }}>
           Send us your essay
         </Typography>
-        <FormControl className={classes.form} fullWidth onSubmit={handleSubmit(onSubmit)}>
+
+        <FormikProvider value={formik}>
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <Stack spacing={3}>
+              {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+
+              <Stack direction={{ xs: 'column' }} spacing={2} marginLeft="10%" marginRight="10%" marginTop="10px">
+                <TextField
+                  label="First name"
+                  {...getFieldProps('firstName')}
+                  error={Boolean(touched.firstName && errors.firstName)}
+                  helperText={touched.firstName && errors.firstName}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Last name"
+                  {...getFieldProps('lastName')}
+                  error={Boolean(touched.lastName && errors.lastName)}
+                  helperText={touched.lastName && errors.lastName}
+                />
+
+                <TextField
+                  fullWidth
+                  autoComplete="email"
+                  type="email"
+                  label="Email address"
+                  {...getFieldProps('email')}
+                  error={Boolean(touched.email && errors.email)}
+                  helperText={touched.email && errors.email}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Essay link"
+                  {...getFieldProps('essayLink')}
+                  error={Boolean(touched.essayLink && errors.essayLink)}
+                  helperText={touched.essayLink && errors.essayLink}
+                />
+
+                <Select
+                  fullWidth
+                  labelId="Path"
+                  value={pathNumber}
+                  onChange={handleChange}
+                  {...getFieldProps('path')}
+                  error={Boolean(touched.path && errors.path)}
+                  helperText={touched.path && errors.path}
+                >
+                  <MenuItem value={1}>Public</MenuItem>
+                  <MenuItem value={2}>Direct</MenuItem>
+                </Select>
+                <Button variant="contained" size="large" type="submit" loading={isSubmitting}>
+                  Submit Now
+                </Button>
+              </Stack>
+
+              {/* <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+                Register
+              </LoadingButton> */}
+            </Stack>
+          </Form>
+        </FormikProvider>
+
+        {/* <FormControl className={classes.form} fullWidth onSubmit={handleSubmit(onSubmit)}>
           <Typography className={classes.text}>First name *</Typography>
           <TextField
             fullWidth
@@ -112,8 +194,8 @@ function MyModal({ isOpen, closeModal }) {
             // error={Boolean(touched.lastName && errors.lastName)}
             // helperText={touched.lastName && errors.lastName}
           />
-          {/* <input className={classes.input} {...register('firstName', { required: true })} />
-          {errors.firstName?.type === 'required' && <p>First name is required.</p>} */}
+          // {/* <input className={classes.input} {...register('firstName', { required: true })} />
+          // {errors.firstName?.type === 'required' && <p>First name is required.</p>} 
           <Typography className={classes.text}>Last name *</Typography>
           <input className={classes.input} {...register('lastName', { required: true })} />
           {errors?.lastName?.type === 'required' && 'Last name is required.'}
@@ -129,10 +211,6 @@ function MyModal({ isOpen, closeModal }) {
             <MenuItem value={2}>Direct</MenuItem>
           </Select>
           {/* <input type="submit" /> */}
-          <Button className={classes.button} variant="contained" size="large" onClick={() => {}}>
-            Submit Now
-          </Button>
-        </FormControl>
       </Box>
     </Modal>
   );
