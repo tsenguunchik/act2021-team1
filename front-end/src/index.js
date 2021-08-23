@@ -1,6 +1,3 @@
-// mock api
-import './_apis_';
-
 // highlight
 import './utils/highlight';
 
@@ -53,7 +50,10 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
+import { authorizationProvider } from './utils/axios';
 // ----------------------------------------------------------------------
+
+authorizationProvider(store);
 
 ReactDOM.render(
   <HelmetProvider>

@@ -60,7 +60,8 @@ export default function Router() {
         },
         { path: 'login-unprotected', element: <Login /> },
         { path: 'register-unprotected', element: <Register /> },
-        { path: 'reset-password', element: <ResetPassword /> }
+        { path: 'reset-password', element: <ResetPassword /> },
+        { path: 'confirm', element: <Confirm /> }
       ]
     },
 
@@ -94,6 +95,7 @@ export default function Router() {
 const Login = Loadable(lazy(() => import('../pages/authentication/Login')));
 const Register = Loadable(lazy(() => import('../pages/authentication/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/authentication/ResetPassword')));
+const Confirm = Loadable(lazy(() => import('../pages/authentication/Confirm')));
 
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));

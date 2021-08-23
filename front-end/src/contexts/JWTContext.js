@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 // utils
-import axios from '../utils/axios';
+import api from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
 
 // ----------------------------------------------------------------------
@@ -72,7 +72,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
+          const response = await api.get('/api/account/my-account');
           const { user } = response.data;
 
           dispatch({
@@ -107,7 +107,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await api.post('/api/account/login', {
       email,
       password
     });
@@ -123,21 +123,39 @@ function AuthProvider({ children }) {
   };
 
   const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await api.post('/signup/register', {
       email,
       password,
-      firstName,
-      lastName
+      first_name: firstName,
+      last_name: lastName
     });
-    const { accessToken, user } = response.data;
+    console.log(response);
+    // const { accessToken, user } = response.data;
 
-    window.localStorage.setItem('accessToken', accessToken);
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user
-      }
+    // window.localStorage.setItem('accessToken', accessToken);
+    // dispatch({
+    //   type: 'REGISTER',
+    //   payload: {
+    //     user
+    //   }
+    // });
+  };
+
+  const confirm = async (email, confirmationCode) => {
+    const response = await api.post('/signup/confirm', {
+      email,
+      confirmation_code: confirmationCode
     });
+    console.log(response);
+    // const { accessToken, user } = response.data;
+
+    // window.localStorage.setItem('accessToken', accessToken);
+    // dispatch({
+    //   type: 'REGISTER',
+    //   payload: {
+    //     user
+    //   }
+    // });
   };
 
   const logout = async () => {
@@ -157,6 +175,7 @@ function AuthProvider({ children }) {
         login,
         logout,
         register,
+        confirm,
         resetPassword,
         updateProfile
       }}

@@ -6,7 +6,7 @@ import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
 import useOffSetTop from '../../hooks/useOffSetTop';
 // components
 import Logo from '../../components/Logo';
-import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_AUTH } from '../../routes/paths';
 import Label from '../../components/Label';
 import { MHidden } from '../../components/@material-extend';
 //
@@ -81,7 +81,7 @@ export default function MainNavbar() {
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
           </MHidden>
 
-          <Button variant="contained" target="_blank" component={RouterLink} to={PATH_AUTH.login}>
+          <Button variant="contained" component={RouterLink} to={PATH_AUTH.login}>
             Login
           </Button>
 

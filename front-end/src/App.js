@@ -6,7 +6,6 @@ import ThemeConfig from './theme';
 import useAuth from './hooks/useAuth';
 
 // components
-import Settings from './components/settings';
 import RtlLayout from './components/RtlLayout';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingScreen from './components/LoadingScreen';
@@ -26,7 +25,6 @@ export default function App() {
         <ThemeLocalization>
           <RtlLayout>
             <NotistackProvider>
-              <Settings />
               <ScrollToTop />
               <GoogleAnalytics />
               {isInitialized ? <Router /> : <LoadingScreen />}

@@ -12,7 +12,7 @@ import AuthLayout from '../../layouts/AuthLayout';
 // components
 import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';
-import { RegisterForm } from '../../components/authentication/register';
+import { ConfirmForm } from '../../components/authentication/confirm';
 
 // ----------------------------------------------------------------------
 
@@ -43,24 +43,17 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Register() {
+export default function Confirm() {
   const { method } = useAuth();
 
   return (
-    <RootStyle title="Register">
-      <AuthLayout>
-        Already have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
-          Login
-        </Link>
-      </AuthLayout>
-
+    <RootStyle title="Confirm">
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Write PS more effectively with MentorMatch
+            Please check your email!
           </Typography>
-          <img alt="register" src="/static/illustrations/illustration_register.png" />
+          <img alt="confirm" src="/static/illustrations/illustration_register.png" />
         </SectionStyle>
       </MHidden>
 
@@ -69,37 +62,16 @@ export default function Register() {
           <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Get started absolutely free.
+                Verify
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Free forever. No credit card needed.</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>
+                We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to verify
+                your account.
+              </Typography>
             </Box>
-            <Tooltip title={capitalCase(method)}>
-              <Box component="img" src={`/static/auth/ic_${method}.png`} sx={{ width: 32, height: 32 }} />
-            </Tooltip>
           </Box>
 
-          <RegisterForm />
-
-          <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-            By registering, I agree to MentorMatch&nbsp;
-            <Link underline="always" color="text.primary" href="#">
-              Terms of Service
-            </Link>
-            &nbsp;and&nbsp;
-            <Link underline="always" color="text.primary" href="#">
-              Privacy Policy
-            </Link>
-            .
-          </Typography>
-
-          <MHidden width="smUp">
-            <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>
-              Already have an account?&nbsp;
-              <Link to={PATH_AUTH.login} component={RouterLink}>
-                Login
-              </Link>
-            </Typography>
-          </MHidden>
+          <ConfirmForm />
         </ContentStyle>
       </Container>
     </RootStyle>

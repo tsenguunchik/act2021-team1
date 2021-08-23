@@ -9,7 +9,6 @@ const initialState = {
   isLoading: false,
   error: false,
   myProfile: null,
-  posts: [],
   users: [],
   userList: [],
   followers: [],
@@ -40,12 +39,6 @@ const slice = createSlice({
     getProfileSuccess(state, action) {
       state.isLoading = false;
       state.myProfile = action.payload;
-    },
-
-    // GET POSTS
-    getPostsSuccess(state, action) {
-      state.isLoading = false;
-      state.posts = action.payload;
     },
 
     // GET USERS
@@ -123,6 +116,11 @@ const slice = createSlice({
     getNotificationsSuccess(state, action) {
       state.isLoading = false;
       state.notifications = action.payload;
+    },
+
+    getLogout(state) {
+      state.isLoading = false;
+      state.myProfile = null;
     }
   }
 });
@@ -131,7 +129,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-export const { onToggleFollow, deleteUser } = slice.actions;
+export const { onToggleFollow, deleteUser, getProfileSuccess, getLogout } = slice.actions;
 
 // ----------------------------------------------------------------------
 
@@ -141,20 +139,6 @@ export function getProfile() {
     try {
       const response = await axios.get('/api/user/profile');
       dispatch(slice.actions.getProfileSuccess(response.data.profile));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-// ----------------------------------------------------------------------
-
-export function getPosts() {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await axios.get('/api/user/posts');
-      dispatch(slice.actions.getPostsSuccess(response.data.posts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

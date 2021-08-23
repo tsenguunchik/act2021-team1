@@ -66,7 +66,7 @@ class V1::SignupController < ApplicationController
   private
 
   def signup_params
-    params.permit(:email, :password)
+    params.permit(:email, :password, :first_name, :last_name)
   end
 
   def send_email
