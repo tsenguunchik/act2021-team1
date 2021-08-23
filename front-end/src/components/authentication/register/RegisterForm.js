@@ -1,24 +1,23 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-// material
 import { Stack, TextField, IconButton, InputAdornment, Alert } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-// hooks
-import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-//
 import { MIconButton } from '../../@material-extend';
-
-// ----------------------------------------------------------------------
+import { getProfile, clearIndicators } from '../../../redux/slices/user';
 
 export default function RegisterForm() {
-  const { register } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loaded, error } = useSelector((state) => state.user);
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -38,31 +37,41 @@ export default function RegisterForm() {
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      try {
-        await register(values.email, values.password, values.firstName, values.lastName);
-        enqueueSnackbar('Register success', {
-          variant: 'success',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          )
-        });
-        if (isMountedRef.current) {
-          setSubmitting(false);
-        }
-      } catch (error) {
-        console.error(error);
-        if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.message });
-          setSubmitting(false);
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(
+        getProfile({
+          email: values.email,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName
+        })
+      );
     }
   });
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setSubmitting, setErrors } = formik;
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  useEffect(() => {
+    if (loaded && isMountedRef.current) {
+      enqueueSnackbar('Register success', {
+        variant: 'success',
+        action: (key) => (
+          <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+            <Icon icon={closeFill} />
+          </MIconButton>
+        )
+      });
+      setSubmitting(false);
+      dispatch(clearIndicators());
+      navigate('/auth/confirm');
+    }
+  }, [loaded, isMountedRef]);
+
+  useEffect(() => {
+    if (!!error && isMountedRef.current) {
+      setErrors({ afterSubmit: error.message });
+      setSubmitting(false);
+    }
+  }, [error]);
 
   return (
     <FormikProvider value={formik}>

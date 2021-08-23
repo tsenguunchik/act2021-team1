@@ -58,6 +58,12 @@ export default function Input(theme) {
               borderColor: theme.palette.action.disabledBackground
             }
           }
+        },
+        input: {
+          '&:-webkit-autofill': {
+            WebkitBoxShadow: '0 0 0 100px #161c24 inset',
+            WebkitTextFillColor: '#fff'
+          }
         }
       }
     }
