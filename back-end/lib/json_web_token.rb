@@ -31,6 +31,8 @@ module JsonWebToken
     {
       id: user.id,
       email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
       accessToken: access_token,
       refreshToken: refresh_token,
     }

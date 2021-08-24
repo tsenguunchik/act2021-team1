@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     post '/signup/resend_code', to: 'signup#resend_code'
     post '/auth/login', to: 'authentication#login'
     post '/auth/refresh_token', to: 'authentication#refresh_token'
+    post '/auth/logout', to: 'authentication#logout'
   end
 end

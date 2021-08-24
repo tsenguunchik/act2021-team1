@@ -2,7 +2,7 @@ import { capitalCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography, Button } from '@material-ui/core';
+import { Box, Card, Stack, Link, Tooltip, Container, Typography, Button } from '@material-ui/core';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // hooks
@@ -13,7 +13,6 @@ import AuthLayout from '../../layouts/AuthLayout';
 import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';
 import { LoginForm } from '../../components/authentication/login';
-import AuthFirebaseSocials from '../../components/authentication/AuthFirebaseSocial';
 
 // ----------------------------------------------------------------------
 
@@ -88,11 +87,9 @@ export default function Login() {
             </Tooltip>
           </Stack>
 
-          {method === 'firebase' && <AuthFirebaseSocials />}
-
-          <Alert severity="info" sx={{ mb: 3 }}>
+          {/* <Alert severity="info" sx={{ mb: 3 }}>
             Use email : <strong>demo@admin.mn</strong> / password :<strong>&nbsp;demo1234</strong>
-          </Alert>
+          </Alert> */}
 
           {method !== 'auth0' ? (
             <LoginForm />

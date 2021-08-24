@@ -1,16 +1,11 @@
-import { BoxZoomHandler } from 'mapbox-gl';
 import * as Yup from 'yup';
 import React from 'react';
 import Modal from 'react-modal';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-import { Button, Box, Container, Typography, TextField, Stack, Alert } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
+import { Button, Box, Typography, TextField, Stack, Alert } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { TextFieldsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   root: {
