@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // hooks
-import useAuth from '../hooks/useAuth';
-// pages
-import Login from '../pages/authentication/Login';
-
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 AuthGuard.propTypes = {
@@ -13,15 +10,15 @@ AuthGuard.propTypes = {
 };
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { myProfile } = useSelector((state) => state.user);
   const { pathname } = useLocation();
   const [requestedLocation, setRequestedLocation] = useState(null);
 
-  if (!isAuthenticated) {
+  if (!myProfile?.accessToken) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }
-    return <Login />;
+    return <Navigate to="/auth/login" />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {

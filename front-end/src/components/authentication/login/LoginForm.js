@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack5';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
@@ -22,15 +23,18 @@ import { LoadingButton } from '@material-ui/lab';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
-import useAuth from '../../../hooks/useAuth';
+// import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
 import { MIconButton } from '../../@material-extend';
+import { login, clearIndicators } from '../../../redux/slices/user';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  const dispatch = useDispatch();
+  const { loaded, error } = useSelector((state) => state.user);
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -47,36 +51,38 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
-      try {
-        await login(values.email, values.password);
-        enqueueSnackbar('Login success', {
-          variant: 'success',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          )
-        });
-        if (isMountedRef.current) {
-          setSubmitting(false);
-        }
-      } catch (error) {
-        console.error(error);
-        resetForm();
-        if (isMountedRef.current) {
-          setSubmitting(false);
-          setErrors({ afterSubmit: error.message });
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(login(values));
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setErrors, setSubmitting } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
+
+  useEffect(() => {
+    if (loaded && isMountedRef.current) {
+      enqueueSnackbar('Login success', {
+        variant: 'success',
+        action: (key) => (
+          <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+            <Icon icon={closeFill} />
+          </MIconButton>
+        )
+      });
+      setSubmitting(false);
+      dispatch(clearIndicators());
+    }
+  }, [loaded, isMountedRef]);
+
+  useEffect(() => {
+    if (!!error && isMountedRef.current) {
+      setSubmitting(false);
+      setErrors({ afterSubmit: error.message });
+    }
+  }, [error]);
 
   return (
     <FormikProvider value={formik}>

@@ -1,7 +1,6 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-// hooks
-import useAuth from '../hooks/useAuth';
 // routes
 import { PATH_DASHBOARD } from '../routes/paths';
 
@@ -12,9 +11,9 @@ GuestGuard.propTypes = {
 };
 
 export default function GuestGuard({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { myProfile } = useSelector((state) => state.user);
 
-  if (isAuthenticated) {
+  if (myProfile?.accessToken) {
     return <Navigate to={PATH_DASHBOARD.root} />;
   }
 

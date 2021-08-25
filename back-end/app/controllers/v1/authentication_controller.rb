@@ -1,4 +1,7 @@
+require 'json_web_token'
+
 class V1::AuthenticationController < ApplicationController
+  include JsonWebToken
   before_action :authorize_request, only: [:logout]
 
   def login
@@ -11,6 +14,8 @@ class V1::AuthenticationController < ApplicationController
     elsif user&.password_digest.present?
       if user.authenticate(params[:password]) 
         render json: JsonWebToken.get_tokens({user_id: user.id, is_social: false}).to_json, status: :ok
+      else
+        respond('The email address or password is incorrect.', :unauthorized, 4012)
       end
     else
       respond('Unregistered email address', :unauthorized, 4012)

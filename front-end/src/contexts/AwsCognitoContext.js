@@ -88,7 +88,7 @@ function AuthProvider({ children }) {
             } else {
               const attributes = await getUserAttributes(user);
               const token = session.getIdToken().getJwtToken();
-   
+
               axios.defaults.headers.common.Authorization = token;
               dispatch({
                 type: 'AUTHENTICATE',

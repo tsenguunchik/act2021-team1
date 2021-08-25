@@ -3,9 +3,10 @@ import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import MainLayout from '../layouts/main';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
+import DashboardLayout from '../layouts/dashboard';
 // guards
 import GuestGuard from '../guards/GuestGuard';
-// import RoleBasedGuard from '../guards/RoleBasedGuard';
+import AuthGuard from '../guards/AuthGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
@@ -58,10 +59,38 @@ export default function Router() {
             </GuestGuard>
           )
         },
+        {
+          path: 'confirm',
+          element: (
+            <GuestGuard>
+              <Confirm />
+            </GuestGuard>
+          )
+        },
         { path: 'login-unprotected', element: <Login /> },
         { path: 'register-unprotected', element: <Register /> },
-        { path: 'reset-password', element: <ResetPassword /> },
-        { path: 'confirm', element: <Confirm /> }
+        { path: 'reset-password', element: <ResetPassword /> }
+      ]
+    },
+
+    // Dashboard
+    {
+      path: '/dashboard',
+      element: (
+        <AuthGuard>
+          <DashboardLayout />
+        </AuthGuard>
+      ),
+      children: [
+        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        {
+          path: 'app',
+          element: (
+            <AuthGuard>
+              <Dashboard />
+            </AuthGuard>
+          )
+        }
       ]
     },
 
@@ -106,3 +135,6 @@ const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+
+// Dashboard
+const Dashboard = Loadable(lazy(() => import('../pages/DashboardApp')));

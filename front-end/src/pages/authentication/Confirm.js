@@ -1,20 +1,11 @@
-import { capitalCase } from 'change-case';
-import { Link as RouterLink } from 'react-router-dom';
-// material
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
-import { Box, Card, Link, Container, Typography, Tooltip } from '@material-ui/core';
-// hooks
-import useAuth from '../../hooks/useAuth';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
-// layouts
-import AuthLayout from '../../layouts/AuthLayout';
-// components
+import { Box, Card, Container, Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';
 import { ConfirmForm } from '../../components/authentication/confirm';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -41,10 +32,15 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0)
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Confirm() {
-  const { method } = useAuth();
+  const { myProfile } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (myProfile === null) {
+      navigate('/auth/register');
+    }
+  }, []);
 
   return (
     <RootStyle title="Confirm">
@@ -62,11 +58,11 @@ export default function Confirm() {
           <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Verify
+                Verification process
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>
-                We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to verify
-                your account.
+                We have emailed a 6-digit confirmation code to {myProfile?.email}, please enter the code in below box to
+                verify your account.
               </Typography>
             </Box>
           </Box>
