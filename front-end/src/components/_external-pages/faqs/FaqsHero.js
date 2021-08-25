@@ -28,24 +28,24 @@ const ContentStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
-  width: 320,
-  color: theme.palette.common.white,
-  transition: theme.transitions.create(['box-shadow', 'width'], {
-    easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter
-  }),
-  '&.Mui-focused': {
-    backgroundColor: alpha(theme.palette.common.white, 0.04),
-    [theme.breakpoints.up('md')]: {
-      width: 480
-    }
-  },
-  '& fieldset': {
-    borderWidth: `1px !important`,
-    borderColor: `${theme.palette.grey[500_32]} !important`
-  }
-}));
+// const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+//   width: 320,
+//   color: theme.palette.common.white,
+//   transition: theme.transitions.create(['box-shadow', 'width'], {
+//     easing: theme.transitions.easing.easeInOut,
+//     duration: theme.transitions.duration.shorter
+//   }),
+//   '&.Mui-focused': {
+//     backgroundColor: alpha(theme.palette.common.white, 0.04),
+//     [theme.breakpoints.up('md')]: {
+//       width: 480
+//     }
+//   },
+//   '& fieldset': {
+//     borderWidth: `1px !important`,
+//     borderColor: `${theme.palette.grey[500_32]} !important`
+//   }
+// }));
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ export default function FaqsHero() {
             <TextAnimate text="you?" />
           </Box>
 
-          <MotionInView variants={varFadeInUp} sx={{ mt: 5 }}>
+          {/* <MotionInView variants={varFadeInUp} sx={{ mt: 5 }}>
             <SearchStyle
               placeholder="Search support"
               startAdornment={
@@ -72,7 +72,7 @@ export default function FaqsHero() {
                 </InputAdornment>
               }
             />
-          </MotionInView>
+          </MotionInView> */}
         </ContentStyle>
       </Container>
     </RootStyle>

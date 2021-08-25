@@ -20,9 +20,9 @@ export default function About() {
   return (
     <RootStyle title="About us">
       <AboutHero />
-      <AboutWhat />
-      <AboutVision />
-      <Divider orientation="vertical" sx={{ my: 10, mx: 'auto', width: 2, height: 40 }} />
+      {/* <AboutWhat />
+      <AboutVision /> */}
+      {/* <Divider orientation="vertical" sx={{ my: 10, mx: 'auto', width: 2, height: 40 }} /> */}
       <AboutTeam />
     </RootStyle>
   );

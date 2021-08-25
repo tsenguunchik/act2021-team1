@@ -147,7 +147,7 @@ export default function LandingMinimalHelps() {
           </MotionInView> */}
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center' }}>
-              Why MentorMatch?
+              What is MentorMatch?
             </Typography>
             <Typography variant="body1" fontSize="18px" sx={{ textAlign: 'left' }}>
               <br />

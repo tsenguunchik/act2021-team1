@@ -3,7 +3,7 @@ import { sub } from 'date-fns';
 import { role } from './role';
 import { email } from './email';
 import { boolean } from './boolean';
-import { company } from './company';
+import { school } from './school';
 import { phoneNumber } from './phoneNumber';
 import { fullAddress, country } from './address';
 import { firstName, lastName, fullName } from './name';
@@ -19,7 +19,7 @@ const mockData = {
   time: (index) => sub(new Date(), { days: index, hours: index }),
   boolean: (index) => boolean[index],
   role: (index) => role[index],
-  company: (index) => company[index],
+  school: (index) => school[index],
   address: {
     fullAddress: (index) => fullAddress[index],
     country: (index) => country[index]

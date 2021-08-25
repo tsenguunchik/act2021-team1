@@ -57,14 +57,30 @@ export default function ContactHero() {
     <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
       <Container maxWidth="lg" sx={{ position: 'relative', height: '100%' }}>
         <ContentStyle>
-          <TextAnimate text="Where" sx={{ color: 'primary.main' }} variants={varFadeInRight} />
-          <br />
-          <Box sx={{ display: 'inline-flex', color: 'common.white' }}>
+          <Box sx={{ display: 'inline-flex', color: 'primary.main' }} variants={varFadeInRight}>
+            <TextAnimate text="Contact" sx={{ mr: 2 }} />
+            <TextAnimate text="us" />
+          </Box>
+
+          <motion.div variants={varFadeInRight}>
+            <Typography
+              variant="h4"
+              sx={{
+                mt: 5,
+                color: 'common.white',
+                fontWeight: 'fontWeightMedium'
+              }}
+            >
+              Write something
+              <br /> cool
+            </Typography>
+          </motion.div>
+
+          {/* <Box sx={{ display: 'inline-flex', color: 'common.white' }}>
             <TextAnimate text="to" sx={{ mr: 2 }} />
             <TextAnimate text="find" sx={{ mr: 2 }} />
             <TextAnimate text="us?" />
-          </Box>
-
+          </Box> 
           <Grid container spacing={5} sx={{ mt: 5, color: 'common.white' }}>
             {CONTACTS.map((contact) => (
               <Grid key={contact.country} item xs={12} sm={6} md={3} lg={2} sx={{ pr: { md: 5 } }}>
@@ -81,7 +97,7 @@ export default function ContactHero() {
                 </motion.div>
               </Grid>
             ))}
-          </Grid>
+          </Grid> */}
         </ContentStyle>
       </Container>
     </RootStyle>
