@@ -63,14 +63,13 @@ export default function Router() {
           path: 'confirm',
           element: (
             <GuestGuard>
-              <Register />
+              <Confirm />
             </GuestGuard>
           )
         },
         { path: 'login-unprotected', element: <Login /> },
         { path: 'register-unprotected', element: <Register /> },
-        { path: 'reset-password', element: <ResetPassword /> },
-        { path: 'confirm', element: <Confirm /> }
+        { path: 'reset-password', element: <ResetPassword /> }
       ]
     },
 
