@@ -8,22 +8,22 @@ import { Box, Typography } from '@material-ui/core';
 //
 import { MapControlPopup, MapControlMarker, MapControlScale, MapControlNavigation } from '../../map';
 import { mapConfig } from '../../../config';
-import { varFadeIn, MotionInView } from '../../animate';
+import { varFadeInUp, MotionInView } from '../../animate';
 
 // ----------------------------------------------------------------------
 
-export const MOCK_ADDRESS = [
-  {
-    latlng: [33, 65],
-    address: '720 Devonshire Ave. Fort Mill, SC 29708',
-    phoneNumber: '905-659-7545'
-  },
-  {
-    latlng: [-12.5, 18.5],
-    address: '8559 Valley Court Owosso, MI 48867',
-    phoneNumber: '1-350-356-2625'
-  }
-];
+// export const MOCK_ADDRESS = [
+//   {
+//     latlng: [33, 65],
+//     address: '720 Devonshire Ave. Fort Mill, SC 29708',
+//     phoneNumber: '905-659-7545'
+//   },
+//   {
+//     latlng: [-12.5, 18.5],
+//     address: '8559 Valley Court Owosso, MI 48867',
+//     phoneNumber: '1-350-356-2625'
+//   }
+// ];
 
 const RootStyle = styled('div')(({ theme }) => ({
   zIndex: 0,
@@ -36,22 +36,29 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
+const IllustrationStyle = styled('img')(({ theme }) => ({
+  width: '90%',
+  height: '90%',
+  margin: 'auto'
+}));
+
 // ----------------------------------------------------------------------
 
 export default function ContactMap() {
-  const theme = useTheme();
-  const isLight = theme.palette.mode === 'light';
-  const [tooltip, setTooltip] = useState(null);
-  const [viewport, setViewport] = useState({
-    latitude: 12,
-    longitude: 42,
-    zoom: 2
-  });
+  // const theme = useTheme();
+  // const isLight = theme.palette.mode === 'light';
+  // const [tooltip, setTooltip] = useState(null);
+  // const [viewport, setViewport] = useState({
+  //   latitude: 12,
+  //   longitude: 42,
+  //   zoom: 2
+  // });
 
   return (
-    <MotionInView variants={varFadeIn}>
+    <MotionInView variants={varFadeInUp}>
       <RootStyle>
-        <MapGL
+        <IllustrationStyle src="/static/illustrations/illustration_components.png" />
+        {/* <MapGL
           {...viewport}
           onViewportChange={setViewport}
           mapStyle={`mapbox://styles/mapbox/${isLight ? 'light' : 'dark'}-v10`}
@@ -95,7 +102,7 @@ export default function ContactMap() {
               </Typography>
             </MapControlPopup>
           )}
-        </MapGL>
+        </MapGL> */}
       </RootStyle>
     </MotionInView>
   );

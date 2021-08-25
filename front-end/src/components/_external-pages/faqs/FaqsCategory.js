@@ -69,7 +69,7 @@ function CategoryCard({ category }) {
 
 export default function FaqsCategory() {
   return (
-    <Grid container spacing={3} sx={{ mb: 15 }}>
+    <Grid container spacing={3} sx={{ mb: 10 }}>
       {CATEGORIES.map((category) => (
         <Grid item xs={12} sm={4} md={2} key={category.label}>
           <MotionInView variants={varFadeIn}>

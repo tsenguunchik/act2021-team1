@@ -1,6 +1,6 @@
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Box, Grid, Card, Container, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Grid, Card, Container, Typography, Paper, useMediaQuery } from '@material-ui/core';
 //
 import { varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 
@@ -8,26 +8,64 @@ import { varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 
 const CARDS = [
   {
-    icon: '/static/icons/ic_flag_us.svg',
-    title: 'Writers',
-    description: 'Experienced writers with the highest satisfaction rates.'
+    icon: '/static/landing/meeting.svg',
+    title: 'Meet with the successful essay writers who got into their dream schools',
+    description: ''
   },
   {
-    icon: '/static/icons/ic_visa.svg',
-    title: 'Prices',
-    description: 'Lowest prices on the market, no upfront payments.'
+    icon: '/static/landing/feedback.svg',
+    title: 'Get personalized feedback tailored to your essay',
+    description: ''
   },
   {
-    icon: '/static/icons/ic_mastercard.svg',
-    title: 'Guarantee',
-    description: 'Security, confidentiality, and money back guaranteed!'
+    icon: '/static/landing/easy.svg',
+    title: 'Easy and simple way to share your essays with the mentors',
+    description: ''
+  }
+];
+
+const STEP_CARDS = [
+  // {
+  //   label: 'Sign up/Log in to MentorMatch',
+  //   icon: '/static/landing/signup.svg'
+  // },
+  {
+    label: 'Press Request Now',
+    icon: '/static/landing/instruc_button.svg'
+  },
+  {
+    label: 'Enter your personal information',
+    icon: '/static/landing/personal-info.svg'
+  },
+  {
+    label: 'Choose either Public or Private',
+    icon: '/static/landing/choice.svg'
+  },
+  {
+    label: 'Choose your mentor if Private is selected',
+    icon: '/static/landing/mentors.svg'
+  },
+  {
+    label: 'Submit your request',
+    icon: '/static/landing/submit.svg'
+  },
+  {
+    label: 'Get notified when your essay is reviewed',
+    icon: '/static/landing/email.svg'
   }
 ];
 
 const shadowIcon = (color) => `drop-shadow(2px 2px 2px ${alpha(color, 0.48)})`;
 
 const RootStyle = styled('div')(({ theme }) => ({
-  paddingTop: theme.spacing(15),
+  paddingTop: theme.spacing(10),
+  [theme.breakpoints.up('md')]: {
+    paddingBottom: theme.spacing(15)
+  }
+}));
+
+const BoxStyle = styled('div')(({ theme }) => ({
+  paddingTop: theme.spacing(10),
   [theme.breakpoints.up('md')]: {
     paddingBottom: theme.spacing(15)
   }
@@ -40,8 +78,8 @@ const CardStyle = styled(Card)(({ theme }) => {
       : alpha(theme.palette.common.black, opacity);
 
   return {
-    maxWidth: 380,
-    minHeight: 440,
+    maxWidth: 280, // 380
+    minHeight: 300, // 440
     margin: 'auto',
     textAlign: 'center',
     padding: theme.spacing(10, 5, 0),
@@ -51,11 +89,11 @@ const CardStyle = styled(Card)(({ theme }) => {
       backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800]
     },
     '&.cardLeft': {
-      [theme.breakpoints.up('md')]: { marginTop: -40 }
+      [theme.breakpoints.up('md')]: { marginTop: -60 }
     },
     '&.cardCenter': {
       [theme.breakpoints.up('md')]: {
-        marginTop: -80,
+        marginTop: -100,
         backgroundColor: theme.palette.background.paper,
         boxShadow: `-40px 40px 80px 0 ${shadowCard(0.4)}`,
         '&:before': {
@@ -79,13 +117,18 @@ const CardStyle = styled(Card)(({ theme }) => {
 });
 
 const CardIconStyle = styled('img')(({ theme }) => ({
-  width: 40,
-  height: 40,
+  width: 80,
+  height: 80,
   margin: 'auto',
+  // color: (theme) => theme.palette.common.white,
+  // marginTop: theme.spacing(3),
   marginBottom: theme.spacing(10),
   filter: shadowIcon(theme.palette.primary.main)
 }));
 
+// StepCards.propTypes = {
+//   category: PropTypes.object
+// };
 // ----------------------------------------------------------------------
 
 export default function LandingMinimalHelps() {
@@ -96,15 +139,28 @@ export default function LandingMinimalHelps() {
   return (
     <RootStyle>
       <Container maxWidth="lg">
-        <Box sx={{ mb: { xs: 10, md: 25 } }}>
-          <MotionInView variants={varFadeInUp}>
+        <Box sx={{ mb: { xs: 10, md: 20 } }}>
+          {/* <MotionInView variants={varFadeInUp}>
             <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary', textAlign: 'center' }}>
               MentorMatch
             </Typography>
-          </MotionInView>
+          </MotionInView> */}
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center' }}>
-              What MentorMatch helps you?
+              What is MentorMatch?
+            </Typography>
+            <Typography variant="body1" fontSize="18px" sx={{ textAlign: 'left' }}>
+              <br />
+              Writing a college admission essay has been a struggle for many high school students, but it is not
+              anymore!
+              <br />
+              <br /> Expressing who you are in a 650-word essay can be an overwhelming task for any 18-year-old high
+              shcool student, not to mention the significance it has on deciding their future. Given the unique features
+              of personal statement, we believe the experts of personal statement are the people who have written the
+              successful ones before and got accepted to their dream schools.
+              <br />
+              <br /> MentorMatch is a platform where high school students can connect with college students or alumni
+              and get personalized feedback on their essays.
             </Typography>
           </MotionInView>
         </Box>
@@ -126,7 +182,7 @@ export default function LandingMinimalHelps() {
                       })
                     }}
                   />
-                  <Typography variant="h5" paragraph>
+                  <Typography variant="h6" paragraph sx={{ textAlign: 'center' }}>
                     {card.title}
                   </Typography>
                   <Typography sx={{ color: isLight ? 'text.secondary' : 'common.white' }}>
@@ -137,6 +193,47 @@ export default function LandingMinimalHelps() {
             </Grid>
           ))}
         </Grid>
+        <BoxStyle>
+          <Box sx={{ mb: { xs: 10, md: 10 } }}>
+            <MotionInView variants={varFadeInDown}>
+              <Typography variant="h2" sx={{ textAlign: 'center' }}>
+                How does MentorMatch work?
+              </Typography>
+
+              <Typography variant="body1" fontSize="18px">
+                <br />
+                In MentorMatch, you can submit your essay in two ways - Direct and Public. Through the Direct path, you
+                can choose the mentor whose feedback you want to get; however, you will be in a queue and it might take
+                longer for some mentors to read your essay. On the other hand, the Public path gives an opportunity to
+                receive feedback faster for the available mentors read essays on a first-come-first-serve basis. Once
+                your mentor gives feedback on your essay, you will be notified via email.
+              </Typography>
+            </MotionInView>
+          </Box>
+
+          <Grid container spacing={3} sx={{ mb: { xs: 10, md: 0 } }}>
+            {STEP_CARDS.map((card) => (
+              <Grid item key={card.label} xs={12} sm={4} md={2}>
+                <Paper
+                  sx={{
+                    px: 2,
+                    height: 260,
+                    display: 'flex',
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    boxShadow: (theme) => theme.customShadows.z8
+                  }}
+                >
+                  <Box component="img" src={card.icon} sx={{ mb: 2, width: 80, height: 80 }} />
+                  <Typography variant="subtitle2">{card.label}</Typography>
+                </Paper>
+              </Grid>
+            ))}
+            {/* <CardIconStyle src="/static/landing/arrow.svg" /> */}
+          </Grid>
+        </BoxStyle>
       </Container>
     </RootStyle>
   );

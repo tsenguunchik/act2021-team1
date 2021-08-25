@@ -1,12 +1,12 @@
 // ----------------------------------------------------------------------
 
 export const role = [
-  'Full Stack Developer',
-  'Full Stack Designer',
-  'Frontend Developer',
-  'UX Designer',
-  'UX Designer',
-  'Project Manager',
+  'Computer science',
+  'Computer science & Psychology',
+  'Computer science',
+  'Major',
+  'Major',
+  'Major',
   'Leader',
   'Backend Developer',
   'Project Manager',

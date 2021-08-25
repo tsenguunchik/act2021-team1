@@ -1,12 +1,12 @@
 // ----------------------------------------------------------------------
 
-export const company = [
-  'Lueilwitz and Sons',
-  'Gleichner, Mueller and Tromp',
-  'Nikolaus - Leuschke',
-  'Hegmann, Kreiger and Bayer',
-  'Grimes Inc',
-  'Durgan - Murazik',
+export const school = [
+  'Maharishi International University',
+  'Lafayette College',
+  'Swarthmore College',
+  'University of Washington',
+  'Wesleyan University',
+  'College name',
   'Altenwerth, Medhurst and Roberts',
   'Raynor Group',
   'Mraz, Donnelly and Collins',

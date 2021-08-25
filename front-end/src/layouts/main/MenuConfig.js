@@ -17,7 +17,7 @@ const menuConfig = [
     path: '/'
   },
   {
-    title: 'Abous us',
+    title: 'Team',
     icon: <Icon icon={homeFill} {...ICON_SIZE} />,
     path: PATH_PAGE.about
   },

@@ -17,28 +17,6 @@ export default function AboutVision() {
         }}
       >
         <img src="/static/about/vision.jpg" alt="about-vision" />
-
-        <Box
-          sx={{
-            bottom: { xs: 24, md: 80 },
-            width: '100%',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            position: 'absolute',
-            justifyContent: 'center'
-          }}
-        >
-          {['logo_amazon', 'logo_hbo', 'logo_ibm', 'logo_lya', 'logo_spotify', 'logo_netflix'].map((logo) => (
-            <MotionInView key={logo} variants={varFadeIn}>
-              <Box
-                component="img"
-                src={`/static/about/${logo}.svg`}
-                sx={{ m: { xs: 1.5, md: 5 }, height: { xs: 24, md: 40 } }}
-              />
-            </MotionInView>
-          ))}
-        </Box>
       </Box>
 
       <Grid container justifyContent="center">

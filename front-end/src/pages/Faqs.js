@@ -3,7 +3,8 @@ import { styled } from '@material-ui/core/styles';
 import { Grid, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
-import { FaqsHero, FaqsCategory, FaqsList, FaqsForm } from '../components/_external-pages/faqs';
+import { FaqsHero, FaqsList, FaqsForm } from '../components/_external-pages/faqs';
+// import { FaqsHero, FaqsCategory, FaqsList, FaqsForm } from '../components/_external-pages/faqs';
 
 // ----------------------------------------------------------------------
 
@@ -22,14 +23,13 @@ export default function Faqs() {
       <FaqsHero />
 
       <Container sx={{ mt: 15, mb: 10 }}>
-        <FaqsCategory />
-
-        <Typography variant="h3" sx={{ mb: 5 }}>
-          Frequently asked questions
-        </Typography>
+        {/* <FaqsCategory /> */}
 
         <Grid container spacing={10}>
           <Grid item xs={12} md={6}>
+            <Typography variant="h3" sx={{ mb: 5 }}>
+              Frequently asked questions
+            </Typography>
             <FaqsList />
           </Grid>
           <Grid item xs={12} md={6}>
