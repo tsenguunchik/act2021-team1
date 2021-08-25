@@ -5,7 +5,7 @@ import { Accordion, Typography, AccordionSummary, AccordionDetails } from '@mate
 // utils
 import mockData from '../../../utils/mock-data';
 //
-import { varFadeIn, MotionInView } from '../../animate';
+import { varFadeInUp, MotionInView } from '../../animate';
 
 // ----------------------------------------------------------------------
 

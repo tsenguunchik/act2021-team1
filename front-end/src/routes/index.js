@@ -82,7 +82,7 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <LandingPage /> },
-        { path: 'about-us', element: <About /> },
+        { path: 'team', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> }
       ]
