@@ -8,7 +8,6 @@ import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-// material
 import {
   Link,
   Stack,
@@ -20,19 +19,12 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-// routes
 import { PATH_AUTH } from '../../../routes/paths';
-// hooks
-// import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-//
 import { MIconButton } from '../../@material-extend';
-import { login, clearIndicators } from '../../../redux/slices/user';
-
-// ----------------------------------------------------------------------
+import { login } from '../../../redux/slices/user';
 
 export default function LoginForm() {
-  // const { login } = useAuth();
   const dispatch = useDispatch();
   const { loaded, error } = useSelector((state) => state.user);
   const isMountedRef = useIsMountedRef();
@@ -64,7 +56,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (loaded && isMountedRef.current) {
-      enqueueSnackbar('Login success', {
+      enqueueSnackbar('Logout success', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>
@@ -73,7 +65,6 @@ export default function LoginForm() {
         )
       });
       setSubmitting(false);
-      dispatch(clearIndicators());
     }
   }, [loaded, isMountedRef]);
 

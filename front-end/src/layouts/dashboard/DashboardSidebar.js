@@ -30,7 +30,7 @@ const AccountStyle = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
   borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.primary.lighter
+  backgroundColor: '#212B36'
 }));
 
 // ----------------------------------------------------------------------
@@ -69,7 +69,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <AccountStyle>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }} width={143}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary.dark' }} noWrap>
+              <Typography variant="subtitle2" sx={{ color: '#FFF' }} noWrap>
                 {myProfile.firstName} {myProfile.lastName}
               </Typography>
             </Box>
@@ -80,6 +80,37 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <NavSection navConfig={sidebarConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
+
+      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+        <Stack
+          alignItems="center"
+          spacing={3}
+          sx={{
+            p: 2.5,
+            borderRadius: 2,
+            position: 'relative',
+            bgcolor: '#212B36'
+          }}
+        >
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography gutterBottom variant="h6" sx={{ color: '#FFF' }}>
+              Get more?
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#FFF' }}>
+              From our facebook page
+            </Typography>
+          </Box>
+
+          <Button
+            fullWidth
+            href="https://material-ui.com/store/items/minimal-dashboard/"
+            target="_blank"
+            variant="contained"
+          >
+            More
+          </Button>
+        </Stack>
+      </Box>
     </Scrollbar>
   );
 

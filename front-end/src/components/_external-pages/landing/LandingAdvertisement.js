@@ -1,14 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-// material
+import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { Button, Box, Container, Typography } from '@material-ui/core';
-//
 import { varFadeInDown, varFadeInUp, MotionInView } from '../../animate';
-
-import Modal from '../Modal';
-
-// ----------------------------------------------------------------------
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 456,
@@ -60,6 +55,8 @@ export default function LandingAdvertisement() {
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Button
+              to="/auth/register"
+              component={RouterLink}
               size="large"
               variant="contained"
               sx={{
@@ -69,16 +66,12 @@ export default function LandingAdvertisement() {
                 bgcolor: 'common.white',
                 '&:hover': { bgcolor: 'grey.300' }
               }}
-              onClick={() => {
-                setOpenModal(true);
-              }}
             >
               Request Now
             </Button>
           </MotionInView>
         </Box>
       </ContentStyle>
-      {openModal && <Modal isOpen={openModal} closeModal={() => setOpenModal(false)} />}
     </Container>
   );
 }

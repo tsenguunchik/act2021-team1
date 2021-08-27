@@ -1,4 +1,5 @@
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
@@ -13,6 +14,7 @@ import { MHidden } from '../../components/@material-extend';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
+import AccountPopover from '../dashboard/AccountPopover';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +51,7 @@ export default function MainNavbar() {
   const isOffset = useOffSetTop(100);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
+  const { myProfile } = useSelector((state) => state.user);
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -81,9 +84,13 @@ export default function MainNavbar() {
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
           </MHidden>
 
-          <Button variant="contained" component={RouterLink} to={PATH_AUTH.login}>
-            Login
-          </Button>
+          {myProfile?.accessToken ? (
+            <AccountPopover />
+          ) : (
+            <Button variant="contained" component={RouterLink} to={PATH_AUTH.login}>
+              Login
+            </Button>
+          )}
 
           <MHidden width="mdUp">
             <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />

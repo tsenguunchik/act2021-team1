@@ -1,15 +1,21 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack5';
+import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
+import closeFill from '@iconify/icons-eva/close-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
 // components
-import { MHidden } from '../../components/@material-extend';
+import { MHidden, MIconButton } from '../../components/@material-extend';
 //
 import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
+import { clearIndicators } from '../../redux/slices/user';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +48,25 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const dispatch = useDispatch();
+  const isMountedRef = useIsMountedRef();
+  const { loaded } = useSelector((state) => state.user);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (loaded && isMountedRef.current) {
+      enqueueSnackbar('Login success', {
+        variant: 'success',
+        action: (key) => (
+          <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+            <Icon icon={closeFill} />
+          </MIconButton>
+        )
+      });
+      dispatch(clearIndicators());
+    }
+  }, [loaded, isMountedRef]);
+
   return (
     <RootStyle>
       <ToolbarStyle>

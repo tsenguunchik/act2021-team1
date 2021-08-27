@@ -139,7 +139,7 @@ export default function BlogPostCard({ post, index }) {
           </Typography>
 
           <TitleStyle
-            to="#"
+            to={`/dashboard/essays/${title}`}
             color="inherit"
             variant="subtitle2"
             underline="hover"

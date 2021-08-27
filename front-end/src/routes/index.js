@@ -90,7 +90,10 @@ export default function Router() {
               <Dashboard />
             </AuthGuard>
           )
-        }
+        },
+        { path: 'essays', element: <Essay /> },
+        { path: 'mentors', element: <Mentor /> },
+        { path: 'essays/:essayId', element: <EssayDetail /> }
       ]
     },
 
@@ -138,3 +141,6 @@ const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 
 // Dashboard
 const Dashboard = Loadable(lazy(() => import('../pages/DashboardApp')));
+const Essay = Loadable(lazy(() => import('../pages/Essay')));
+const Mentor = Loadable(lazy(() => import('../pages/Mentor')));
+const EssayDetail = Loadable(lazy(() => import('../pages/EssayDetail')));

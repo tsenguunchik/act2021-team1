@@ -108,8 +108,8 @@ const CardStyle = styled(Card)(({ theme }) => {
           width: 'calc(100% - 40px)',
           height: 'calc(100% - 40px)',
           borderRadius: theme.shape.borderRadiusMd,
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: `-20px 20px 40px 0 ${shadowCard(0.12)}`
+          backgroundColor: theme.palette.background.paper
+          // boxShadow: `-20px 20px 40px 0 ${shadowCard(0.12)}`
         }
       }
     }
