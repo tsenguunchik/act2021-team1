@@ -56,7 +56,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (loaded && isMountedRef.current) {
-      enqueueSnackbar('Logout success', {
+      enqueueSnackbar('Logout successfully', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>

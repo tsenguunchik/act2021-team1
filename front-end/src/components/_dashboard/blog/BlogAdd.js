@@ -25,7 +25,8 @@ import {
 import { LoadingButton } from '@material-ui/lab';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import { MIconButton } from '../../@material-extend';
-import { login, clearIndicators } from '../../../redux/slices/user';
+import { submitEssay, clearIndicators } from '../../../redux/slices/essay';
+import { getMentors } from '../../../redux/slices/mentor';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -37,7 +38,9 @@ const useStyles = makeStyles(() =>
 
 export default function BlogAdd({ open, onClose }) {
   const dispatch = useDispatch();
-  const { loaded, error } = useSelector((state) => state.user);
+  const [loadedMentors, setLoadedMentors] = useState(null);
+  const { loaded, error } = useSelector((state) => state.essay);
+  const { mentors } = useSelector((state) => state.mentor);
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
@@ -51,27 +54,39 @@ export default function BlogAdd({ open, onClose }) {
   };
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required')
+    personal_note: Yup.string().required('Title is required'),
+    university_name: Yup.string().required('University name is required'),
+    google_doc_link: Yup.string().required('Essay link is required'),
+    essay_intro: Yup.string().required('Essay intro is required')
   });
 
   const formik = useFormik({
     initialValues: {
       personal_note: '',
-      essay_type: 0,
-      mentor: null,
-      university: '',
-      essay_link: '',
+      essay_rule: 0,
+      mentor: { label: null, id: null },
+      university_name: '',
+      google_doc_link: '',
       essay_intro: ''
     },
     validationSchema: LoginSchema,
     onSubmit: (values) => {
-      dispatch(login(values));
+      let tempValue = values;
+
+      if (values.mentor.label) {
+        tempValue = { ...tempValue, mentor_id: values.mentor.id };
+      } else {
+        tempValue = { ...tempValue, mentor_id: null };
+      }
+      delete tempValue.mentor;
+
+      dispatch(submitEssay(tempValue));
     }
   });
 
   useEffect(() => {
     if (loaded && isMountedRef.current) {
-      enqueueSnackbar('Login success', {
+      enqueueSnackbar('Essay created successfully', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>
@@ -80,7 +95,8 @@ export default function BlogAdd({ open, onClose }) {
         )
       });
       setSubmitting(false);
-      dispatch(clearIndicators());
+      onClose(false);
+      resetForm();
     }
   }, [loaded, isMountedRef]);
 
@@ -91,23 +107,41 @@ export default function BlogAdd({ open, onClose }) {
     }
   }, [error]);
 
-  const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 }
-  ];
+  useEffect(() => {
+    dispatch(getMentors());
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setErrors, setSubmitting } = formik;
+    return () => dispatch(clearIndicators());
+  }, []);
+
+  useEffect(() => {
+    if (mentors.length > 0) {
+      const topMentors = mentors.map((mentor) => ({
+        label: `${mentor.first_name} ${mentor.last_name}`,
+        id: mentor.id
+      }));
+
+      setLoadedMentors(topMentors);
+    }
+  }, [mentors]);
+
+  const {
+    errors,
+    touched,
+    values,
+    isSubmitting,
+    handleSubmit,
+    getFieldProps,
+    setErrors,
+    setSubmitting,
+    setFieldValue,
+    resetForm
+  } = formik;
 
   return (
     <Drawer anchor="right" open={open} onClose={toggleDrawer(false)} classes={{ paper: classes.root }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
-        <Typography variant="subtitle1" sx={{ ml: 1 }}>
-          Send us your essay
+        <Typography variant="h6" sx={{ ml: 1 }}>
+          {/* Send us your essay */}
         </Typography>
         <IconButton onClick={toggleDrawer(false)}>
           <Icon icon={closeFill} width={20} height={20} />
@@ -130,7 +164,7 @@ export default function BlogAdd({ open, onClose }) {
                     <TextField
                       fullWidth
                       type="text"
-                      label="Personal note"
+                      label="Title"
                       {...getFieldProps('personal_note')}
                       error={Boolean(touched.personal_note && errors.personal_note)}
                       helperText={touched.personal_note && errors.personal_note}
@@ -142,19 +176,22 @@ export default function BlogAdd({ open, onClose }) {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Essay type"
-                        {...getFieldProps('essay_type')}
+                        {...getFieldProps('essay_rule')}
                       >
                         <MenuItem value={0}>Public</MenuItem>
                         <MenuItem value={1}>Private</MenuItem>
                       </Select>
                     </FormControl>
 
-                    {values.essay_type === 1 && (
+                    {values.essay_rule === 1 && (
                       <FormControl fullWidth>
                         <Autocomplete
                           disablePortal
-                          {...getFieldProps('mentor')}
-                          options={top100Films}
+                          value={values.mentor.label}
+                          isOptionEqualToValue={(option, value) => option.label}
+                          onChange={(event, newValue) => setFieldValue('mentor', newValue)}
+                          id="mentor"
+                          options={loadedMentors}
                           renderInput={(params) => <TextField {...params} label="Mentors" />}
                         />
                       </FormControl>
@@ -164,27 +201,30 @@ export default function BlogAdd({ open, onClose }) {
                       fullWidth
                       type="text"
                       label="University"
-                      {...getFieldProps('university')}
-                      error={Boolean(touched.university && errors.university)}
-                      helperText={touched.university && errors.university}
+                      {...getFieldProps('university_name')}
+                      error={Boolean(touched.university_name && errors.university_name)}
+                      helperText={touched.university_name && errors.university_name}
                     />
 
                     <TextField
                       fullWidth
                       type="text"
                       label="Google doc link"
-                      {...getFieldProps('essay_link')}
-                      error={Boolean(touched.essay_link && errors.essay_link)}
-                      helperText={touched.essay_link && errors.essay_link}
+                      {...getFieldProps('google_doc_link')}
+                      error={Boolean(touched.google_doc_link && errors.google_doc_link)}
+                      helperText={touched.google_doc_link && errors.google_doc_link}
                     />
 
                     <TextField
                       fullWidth
+                      multiline
+                      maxRows={4}
+                      minRows={4}
                       type="text"
                       label="Essay introduction"
                       {...getFieldProps('essay_intro')}
-                      error={Boolean(touched.essay_link && errors.essay_link)}
-                      helperText={touched.essay_link && errors.essay_link}
+                      error={Boolean(touched.essay_intro && errors.essay_intro)}
+                      helperText={touched.essay_intro && errors.essay_intro}
                     />
                   </Stack>
                 </Stack>

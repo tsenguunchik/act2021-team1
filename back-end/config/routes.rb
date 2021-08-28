@@ -9,5 +9,14 @@ Rails.application.routes.draw do
     post '/auth/login', to: 'authentication#login'
     post '/auth/refresh_token', to: 'authentication#refresh_token'
     post '/auth/logout', to: 'authentication#logout'
+    post '/essay/create', to: 'essay#create'
+    get '/essay', to: 'essay#index'
+    get '/essay/:id', to: 'essay#show'
+    put '/essay/:id', to: 'essay#update'
+    put '/essay/done/:id', to: 'essay#done'
+    get '/mentor', to: 'mentor#index'
+    get '/notifications', to: 'notifications#index'
+    get '/notifications/badge', to: 'notifications#badge'
+    put '/notifications/:id', to: 'notifications#update'
   end
 end

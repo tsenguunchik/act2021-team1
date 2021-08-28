@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
+import faker from 'faker';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import { Link as RouterLink } from 'react-router-dom';
 import shareFill from '@iconify/icons-eva/share-fill';
@@ -8,7 +9,7 @@ import messageCircleFill from '@iconify/icons-eva/message-circle-fill';
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@material-ui/core';
 // utils
-import { fDate } from '../../../utils/formatTime';
+import { fDateTime } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
 //
 import SvgIconStyle from '../../SvgIconStyle';
@@ -55,21 +56,17 @@ const CoverImgStyle = styled('img')({
 
 // ----------------------------------------------------------------------
 
-BlogPostCard.propTypes = {
+EssayCard.propTypes = {
   post: PropTypes.object.isRequired,
   index: PropTypes.number
 };
 
-export default function BlogPostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+export default function EssayCard({ post, index }) {
+  const { cover, personal_note, seen_count, author, created_at, id } = post;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 
-  const POST_INFO = [
-    { number: comment, icon: messageCircleFill },
-    { number: view, icon: eyeFill },
-    { number: share, icon: shareFill }
-  ];
+  const POST_INFO = [{ number: seen_count, icon: eyeFill }];
 
   return (
     <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
@@ -121,7 +118,7 @@ export default function BlogPostCard({ post, index }) {
             }}
           />
 
-          <CoverImgStyle alt={title} src={cover} />
+          <CoverImgStyle alt={personal_note} src={cover} />
         </CardMediaStyle>
 
         <CardContent
@@ -135,11 +132,11 @@ export default function BlogPostCard({ post, index }) {
           }}
         >
           <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(createdAt)}
+            {fDateTime(created_at)}
           </Typography>
 
           <TitleStyle
-            to={`/dashboard/essays/${title}`}
+            to={`/dashboard/essays/${id}`}
             color="inherit"
             variant="subtitle2"
             underline="hover"
@@ -151,7 +148,7 @@ export default function BlogPostCard({ post, index }) {
               })
             }}
           >
-            {title}
+            {personal_note}
           </TitleStyle>
 
           <InfoStyle>

@@ -4,6 +4,7 @@ require 'json_web_token'
 class ApplicationController < ActionController::API
   include ErrorHandler
   include JsonWebToken
+  include NotificationHelper
 
   def authorize_request
     auth_header = request.headers['authorization']

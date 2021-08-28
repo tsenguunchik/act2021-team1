@@ -52,7 +52,7 @@ export default function RegisterForm() {
 
   useEffect(() => {
     if (loaded && isMountedRef.current) {
-      enqueueSnackbar('Register success', {
+      enqueueSnackbar('Register successfully', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>

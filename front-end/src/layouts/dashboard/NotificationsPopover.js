@@ -1,7 +1,8 @@
 import faker from 'faker';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { set, sub, formatDistanceToNow } from 'date-fns';
 import { Icon } from '@iconify/react';
@@ -30,6 +31,7 @@ import { mockImgAvatar } from './mockImages';
 // components
 import Scrollbar from '../../components/Scrollbar';
 import MenuPopover from '../../components/MenuPopover';
+import { getNotifications, getNotificationDetail } from '../../redux/slices/notification';
 
 // ----------------------------------------------------------------------
 
@@ -121,56 +123,59 @@ function renderContent(notification) {
   };
 }
 
-NotificationItem.propTypes = {
-  notification: PropTypes.object.isRequired
-};
-
-function NotificationItem({ notification }) {
-  const { avatar, title } = renderContent(notification);
-
-  return (
-    <ListItemButton
-      to="#"
-      disableGutters
-      component={RouterLink}
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected'
-        })
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled'
-            }}
-          >
-            <Box component={Icon} icon={clockFill} sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {formatDistanceToNow(new Date(notification.createdAt))}
-          </Typography>
-        }
-      />
-    </ListItemButton>
-  );
-}
-
 export default function NotificationsPopover() {
+  const dispatch = useDispatch();
+  const { notifications } = useSelector((state) => state.notification);
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+
+  const handleNotificationClick = (id) => {
+    dispatch(getNotificationDetail(id));
+    setOpen(false);
+  };
+
+  function NotificationItem({ notification }) {
+    const { avatar, title } = renderContent(notification);
+
+    return (
+      <ListItemButton
+        to={`/dashboard/essays/${notification.id}`}
+        onClick={() => handleNotificationClick(notification.id)}
+        disableGutters
+        component={RouterLink}
+        sx={{
+          py: 1.5,
+          px: 2.5,
+          mt: '1px',
+          ...(notification.isUnRead && {
+            bgcolor: 'action.selected'
+          })
+        }}
+      >
+        <ListItemAvatar>
+          <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={title}
+          secondary={
+            <Typography
+              variant="caption"
+              sx={{
+                mt: 0.5,
+                display: 'flex',
+                alignItems: 'center',
+                color: 'text.disabled'
+              }}
+            >
+              <Box component={Icon} icon={clockFill} sx={{ mr: 0.5, width: 16, height: 16 }} />
+              {formatDistanceToNow(new Date(notification.createdAt))}
+            </Typography>
+          }
+        />
+      </ListItemButton>
+    );
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -181,13 +186,17 @@ export default function NotificationsPopover() {
   };
 
   const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false
-      }))
-    );
+    // setNotifications(
+    //   notifications.map((notification) => ({
+    //     ...notification,
+    //     isUnRead: false
+    //   }))
+    // );
   };
+
+  useEffect(() => {
+    dispatch(getNotifications());
+  }, []);
 
   return (
     <>
@@ -216,13 +225,13 @@ export default function NotificationsPopover() {
             </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {/* {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </IconButton>
             </Tooltip>
-          )}
+          )} */}
         </Box>
 
         <Divider />
@@ -254,14 +263,6 @@ export default function NotificationsPopover() {
             ))}
           </List>
         </Scrollbar>
-
-        <Divider />
-
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple component={RouterLink} to="#">
-            View All
-          </Button>
-        </Box>
       </MenuPopover>
     </>
   );

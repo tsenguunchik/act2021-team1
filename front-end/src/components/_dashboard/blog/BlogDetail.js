@@ -1,12 +1,25 @@
 import faker from 'faker';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import { Link as RouterLink } from 'react-router-dom';
-import shareFill from '@iconify/icons-eva/share-fill';
-import messageCircleFill from '@iconify/icons-eva/message-circle-fill';
+import { useEffect } from 'react';
+import { useSnackbar } from 'notistack5';
+import { useDispatch, useSelector } from 'react-redux';
 import { alpha, styled } from '@material-ui/core/styles';
-import { Stack, Link, Card, Grid, Avatar, Typography, CardContent, Divider, CardHeader } from '@material-ui/core';
+import { Icon } from '@iconify/react';
+import {
+  Stack,
+  Link,
+  Card,
+  Grid,
+  Avatar,
+  Typography,
+  CardContent,
+  Divider,
+  CardHeader,
+  Button,
+  Alert,
+  AlertTitle
+} from '@material-ui/core';
+import closeFill from '@iconify/icons-eva/close-fill';
 import {
   Timeline,
   TimelineItem,
@@ -16,8 +29,10 @@ import {
   TimelineDot
 } from '@material-ui/lab';
 import { fDate, fDateTime } from '../../../utils/formatTime';
-import POSTS from '../../../utils/essay';
-import BlogPostCard from './BlogPostCard';
+import EssayCard from './BlogPostCard';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { MIconButton } from '../../@material-extend';
+import { changeReviewStatus, changeDoneStatus, clearIndicators } from '../../../redux/slices/essay';
 
 const TIMELINES = [
   {
@@ -79,26 +94,25 @@ BlogDetail.propTypes = {
 };
 
 function OrderItem({ item, isLast }) {
-  const { type, title, time } = item;
+  const { essay_status, created_at } = item;
+
   return (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot
           sx={{
             bgcolor:
-              (type === 'order1' && 'primary.main') ||
-              (type === 'order2' && 'success.main') ||
-              (type === 'order3' && 'info.main') ||
-              (type === 'order4' && 'warning.main') ||
-              'error.main'
+              (essay_status === 'reviewing' && 'primary.main') ||
+              (essay_status === 'done' && 'success.main') ||
+              (essay_status === 'created' && 'info.main')
           }}
         />
         {isLast ? null : <TimelineConnector />}
       </TimelineSeparator>
       <TimelineContent>
-        <Typography variant="subtitle2">{title}</Typography>
+        <Typography variant="subtitle2">{essay_status}</Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {fDateTime(time)}
+          {fDateTime(created_at)}
         </Typography>
       </TimelineContent>
     </TimelineItem>
@@ -106,8 +120,36 @@ function OrderItem({ item, isLast }) {
 }
 
 export default function BlogDetail({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const { cover, personal_note, author, created_at } = post;
+  const dispatch = useDispatch();
+  const { loaded, currentEssay } = useSelector((state) => state.essay);
+  const { myProfile } = useSelector((state) => state.user);
   const latestPostLarge = index === 0;
+  const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (loaded && isMountedRef.current) {
+      enqueueSnackbar('Thank you for your participation', {
+        variant: 'success',
+        action: (key) => (
+          <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+            <Icon icon={closeFill} />
+          </MIconButton>
+        )
+      });
+
+      dispatch(clearIndicators());
+    }
+  }, [loaded, isMountedRef]);
+
+  const handleReview = () => {
+    dispatch(changeReviewStatus(post.id));
+  };
+
+  const handleDone = () => {
+    dispatch(changeDoneStatus(post.id));
+  };
 
   return (
     <>
@@ -148,24 +190,23 @@ export default function BlogDetail({ post, index }) {
           />
 
           <Typography variant="h6" sx={{ position: 'absolute', zIndex: 9, top: 32, left: 75 }}>
-            Nasnajargal Binderiya
+            {post.author.name}
           </Typography>
 
-          <CoverImgStyle alt={title} src={cover} />
+          <CoverImgStyle alt={personal_note} src={cover} />
         </CardMediaStyle>
 
         <CardContent
           sx={{
             pt: 4,
             ...(latestPostLarge && {
-              bottom: 40,
-              height: '50%',
+              bottom: 0,
               position: 'absolute'
             })
           }}
         >
           <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(createdAt)}
+            {fDate(created_at)}
           </Typography>
 
           <Typography
@@ -175,7 +216,7 @@ export default function BlogDetail({ post, index }) {
               color: 'common.white'
             }}
           >
-            {title}
+            {personal_note}
           </Typography>
         </CardContent>
       </Card>
@@ -192,7 +233,7 @@ export default function BlogDetail({ post, index }) {
                 </Grid>
 
                 <Grid item xs={8}>
-                  <Typography variant="subheading">Harvard</Typography>
+                  <Typography variant="subheading">{post.university_name}</Typography>
                 </Grid>
               </Grid>
 
@@ -206,11 +247,7 @@ export default function BlogDetail({ post, index }) {
                 </Grid>
 
                 <Grid item xs={8}>
-                  <Typography variant="subheading">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book.
-                  </Typography>
+                  <Typography variant="subheading">{post.essay_intro}</Typography>
                 </Grid>
               </Grid>
 
@@ -225,7 +262,7 @@ export default function BlogDetail({ post, index }) {
 
                 <Grid item xs={8}>
                   <Link
-                    href="https://docs.google.com/document/d/1zf9EHHwZrZPURljcVIcFTxUfBZIOwxj36cctOM3Yfnw/edit"
+                    href={post.google_doc_link}
                     target="_blank"
                     sx={{
                       lineHeight: 2,
@@ -235,12 +272,32 @@ export default function BlogDetail({ post, index }) {
                       '& > div': { display: 'inherit' }
                     }}
                   >
-                    <Typography noWrap>
-                      https://docs.google.com/document/d/1zf9EHHwZrZPURljcVIcFTxUfBZIOwxj36cctOM3Yfnw/edit
-                    </Typography>
+                    <Typography noWrap>{post.google_doc_link}</Typography>
                   </Link>
                 </Grid>
               </Grid>
+
+              {myProfile.role === 'mentor' && (
+                <Stack pt={6} flexDirection="row" justifyContent="space-evenly">
+                  {currentEssay.log.length === 1 && (
+                    <Button onClick={() => handleReview()} variant="contained">
+                      I will review this essay
+                    </Button>
+                  )}
+
+                  {currentEssay.log.length === 2 && (
+                    <Button onClick={() => handleDone()} variant="contained">
+                      Finished reviewing this essay
+                    </Button>
+                  )}
+
+                  {currentEssay.log.length === 3 && (
+                    <Alert severity="success">
+                      <AlertTitle>This essay has been reviewed successfully</AlertTitle>
+                    </Alert>
+                  )}
+                </Stack>
+              )}
             </CardContent>
           </Card>
         </Grid>
@@ -252,11 +309,11 @@ export default function BlogDetail({ post, index }) {
               }
             }}
           >
-            <CardHeader title="Order Timeline" />
+            <CardHeader title="Essay Timeline" />
             <CardContent>
               <Timeline sx={{ p: 0 }}>
-                {TIMELINES.map((item, index) => (
-                  <OrderItem key={item.title} item={item} isLast={index === TIMELINES.length - 1} />
+                {currentEssay.log.map((item, index) => (
+                  <OrderItem key={item.id} item={item} isLast={index === currentEssay.log.length - 1} />
                 ))}
               </Timeline>
             </CardContent>
@@ -265,12 +322,12 @@ export default function BlogDetail({ post, index }) {
       </Grid>
 
       <Typography variant="h4" sx={{ mt: 10, mb: 4 }}>
-        Recent posts
+        Recent essays
       </Typography>
 
       <Grid container spacing={3}>
-        {POSTS.map((post, index) => (
-          <BlogPostCard key={post.id} post={post} index={index} />
+        {post.otherEssays.map((post, index) => (
+          <EssayCard key={post.id} post={post} index={index} />
         ))}
       </Grid>
     </>

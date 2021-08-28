@@ -35,6 +35,7 @@ module JsonWebToken
       lastName: user.last_name,
       accessToken: access_token,
       refreshToken: refresh_token,
+      role: user.user_type
     }
   end
 end

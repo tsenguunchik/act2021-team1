@@ -2,7 +2,12 @@ class User < ApplicationRecord
   require 'securerandom'
   has_secure_password(validations: false)
 
+  has_many :essays
+  has_many :essay_logs
+
   before_save :downcase_email
+
+  enum user_type: { normal_user: 0, mentor: 1 }, _prefix: true
   
   validates :email, uniqueness: { case_sensitive: false }, length: { maximum: 100 }, format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }
   validates :password, length: { minimum: 8 }, allow_blank: true

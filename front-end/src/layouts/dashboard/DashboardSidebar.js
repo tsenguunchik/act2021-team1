@@ -103,7 +103,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
           <Button
             fullWidth
-            href="https://material-ui.com/store/items/minimal-dashboard/"
+            href="https://www.facebook.com/profile.php?id=100072214090505"
             target="_blank"
             variant="contained"
           >

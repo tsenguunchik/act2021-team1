@@ -27,31 +27,31 @@ ShopProductCard.propTypes = {
   product: PropTypes.object
 };
 
-const SOCIALS = [
-  {
-    name: 'Facebook',
-    value: faker.datatype.number(),
-    icon: <Icon icon={facebookFill} color="rgb(24, 119, 242)" width={24} height={24} />
-  },
-  {
-    name: 'Google',
-    value: faker.datatype.number(),
-    icon: <Icon icon={googleFill} color="rgb(215, 51, 109)" width={24} height={24} />
-  },
-  {
-    name: 'Linkedin',
-    value: faker.datatype.number(),
-    icon: <Icon icon={linkedinFill} color="#006097" width={24} height={24} />
-  },
-  {
-    name: 'Twitter',
-    value: faker.datatype.number(),
-    icon: <Icon icon={twitterFill} color="#1C9CEA" width={24} height={24} />
-  }
-];
-
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { first_name, cover, last_name, university_name, gmail_link, linkedin_link, twitter_link } = product;
+
+  const SOCIALS = [
+    {
+      name: 'Facebook',
+      value: faker.datatype.number(),
+      icon: <Icon icon={facebookFill} color="rgb(24, 119, 242)" width={24} height={24} />
+    },
+    {
+      name: 'Google',
+      value: gmail_link,
+      icon: <Icon icon={googleFill} color="rgb(215, 51, 109)" width={24} height={24} />
+    },
+    {
+      name: 'Linkedin',
+      value: linkedin_link,
+      icon: <Icon icon={linkedinFill} color="#006097" width={24} height={24} />
+    },
+    {
+      name: 'Twitter',
+      value: twitter_link,
+      icon: <Icon icon={twitterFill} color="#1C9CEA" width={24} height={24} />
+    }
+  ];
 
   return (
     <Card>
@@ -61,22 +61,7 @@ export default function ShopProductCard({ product }) {
           position: 'relative'
         }}
       >
-        {/* {status && (
-          <Label
-            variant="filled"
-            color={(status === 'Harvard' && 'error') || 'info'}
-            sx={{
-              zIndex: 9,
-              top: 16,
-              right: 16,
-              position: 'absolute',
-              textTransform: 'uppercase'
-            }}
-          >
-            {status}
-          </Label>
-        )} */}
-        <ProductImgStyle alt={name} src={cover} />
+        <ProductImgStyle alt={first_name} src={cover} />
         <Avatar
           src="https://minimals.cc/static/mock-images/avatars/avatar_6.jpg"
           alt="photoURL"
@@ -86,15 +71,25 @@ export default function ShopProductCard({ product }) {
 
       <Stack spacing={2} sx={{ p: 3 }} alignItems="center">
         <Typography variant="subtitle1" noWrap>
-          Nasanjargal Binderiya
+          {first_name} {last_name}
         </Typography>
-        <Typography variant="subtitle1" noWrap>
-          Harvard
+        <Typography variant="body2" noWrap>
+          {university_name}
         </Typography>
         <Stack flexDirection="row">
-          {SOCIALS.map((social) => (
-            <Tooltip key={social.value} title={capitalCase(social.name)}>
-              <IconButton>{social.icon}</IconButton>
+          {SOCIALS.map((social, index) => (
+            <Tooltip key={index} title={social.value}>
+              <IconButton
+                onClick={() => {
+                  if (social.name === 'Google') {
+                    window.open(`mailto: ${social.value}`);
+                  } else {
+                    window.open('https://www.Linkedin.com', '_blank');
+                  }
+                }}
+              >
+                {social.icon}
+              </IconButton>
             </Tooltip>
           ))}
         </Stack>

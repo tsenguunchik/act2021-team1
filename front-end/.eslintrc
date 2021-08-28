@@ -23,6 +23,7 @@
     }
   },
   "rules": {
+    "camelcase": "off",
     "object-shorthand": 0,
     "no-useless-computed-key": 0,
     "jsx-a11y/no-autofocus": 0,

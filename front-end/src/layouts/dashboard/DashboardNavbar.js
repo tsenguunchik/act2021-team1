@@ -55,7 +55,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
 
   useEffect(() => {
     if (loaded && isMountedRef.current) {
-      enqueueSnackbar('Login success', {
+      enqueueSnackbar('Login successfully', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>

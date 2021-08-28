@@ -1,17 +1,21 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // material
 import { Container, Stack, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { ProductSort, ProductList, ProductFilterSidebar } from '../components/_dashboard/products';
 //
-import PRODUCTS from '../utils/products';
+import { getMentors } from '../redux/slices/mentor';
+import LoadingScreen from '../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
 export default function Mentor() {
   const [openFilter, setOpenFilter] = useState(false);
+  const dispatch = useDispatch();
+  const { mentors, pending } = useSelector((state) => state.mentor);
 
   const formik = useFormik({
     initialValues: {
@@ -41,6 +45,10 @@ export default function Mentor() {
     resetForm();
   };
 
+  useEffect(() => {
+    dispatch(getMentors());
+  }, []);
+
   return (
     <Page title="Mentors">
       <Container>
@@ -61,7 +69,8 @@ export default function Mentor() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        <ProductList products={mentors} />
+        {pending && <LoadingScreen />}
       </Container>
     </Page>
   );
