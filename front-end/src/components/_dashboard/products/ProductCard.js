@@ -28,7 +28,7 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { first_name, cover, last_name, university_name, gmail_link, linkedin_link, twitter_link } = product;
+  const { first_name, cover, last_name, university_name, gmail_link, linkedin_link, twitter_link, avatarUrl } = product;
 
   const SOCIALS = [
     {
@@ -63,7 +63,7 @@ export default function ShopProductCard({ product }) {
       >
         <ProductImgStyle alt={first_name} src={cover} />
         <Avatar
-          src="https://minimals.cc/static/mock-images/avatars/avatar_6.jpg"
+          src={avatarUrl}
           alt="photoURL"
           sx={{ margin: 'auto', width: 100, height: 100, position: 'absolute', top: 0, left: 0, bottom: 0, right: 0 }}
         />

@@ -35,7 +35,11 @@ const slice = createSlice({
       state.pending = false;
       state.loaded = true;
       state.error = false;
-      const result = action.payload.map((mentor, index) => ({ ...mentor, cover: mockImgProduct(index + 1) }));
+      const result = action.payload.map((mentor, index) => ({
+        ...mentor,
+        cover: mockImgProduct(index + 1),
+        avatarUrl: `/static/mock-images/avatars/mentor_${index + 1}.png`
+      }));
       state.mentors = result;
     }
   }

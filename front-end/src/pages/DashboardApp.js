@@ -16,6 +16,7 @@ import {
   AppCurrentSubject,
   AppConversionRates
 } from '../components/_dashboard/app';
+import { ComingSoonIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +27,10 @@ export default function DashboardApp() {
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Hi, Welcome back</Typography>
         </Box>
-        <Grid container spacing={3}>
+        <Typography sx={{ color: 'text.secondary' }}>We are currently working hard on this page!</Typography>
+
+        <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWeeklySales />
           </Grid>
@@ -71,7 +75,7 @@ export default function DashboardApp() {
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Container>
     </Page>
   );

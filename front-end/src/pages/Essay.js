@@ -48,7 +48,7 @@ export default function Blog() {
           </Stack>
 
           <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-            <BlogPostsSearch posts={POSTS} />
+            <BlogPostsSearch posts={essays} />
             <BlogPostsSort options={SORT_OPTIONS} />
           </Stack>
 

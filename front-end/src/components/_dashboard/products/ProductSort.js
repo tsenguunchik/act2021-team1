@@ -9,9 +9,7 @@ import { Menu, Button, MenuItem, Typography } from '@material-ui/core';
 
 const SORT_BY_OPTIONS = [
   { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' }
+  { value: 'newest', label: 'Newest' }
 ];
 
 export default function ShopProductSort() {

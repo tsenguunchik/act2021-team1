@@ -40,7 +40,7 @@ export default function MainLayout() {
             <Typography variant="caption" component="p">
               © All rights reserved
               <br /> made by &nbsp;
-              <Link href="google.com">MentorMatch</Link>
+              <Link href="https://amsa-essay.com">MentorMatch</Link>
             </Typography>
           </Container>
         </Box>
